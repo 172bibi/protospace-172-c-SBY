@@ -21,6 +21,8 @@ class PrototypesController < ApplicationController
 
   def show
     @prototype = Prototype.find(params[:id])
+    @comment = Comment.new
+    @comments = @prototype.comments.includes(:prototype)
   end
 
   def edit
@@ -34,6 +36,21 @@ class PrototypesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    prototype = Prototype.find(params[:id])
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
+
+    if current_user.id == prototype.user_id
+      prototype.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
+    
   end
 
   private
