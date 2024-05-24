@@ -60,8 +60,8 @@ class PrototypesController < ApplicationController
   end
 
   def correct_user
-    @user = User.find(params[:id])
-    unless @user == current_user
+    @prototype = Prototype.find(params[:id])
+    unless @prototype.user_id == current_user.id
       redirect_to root_path
     end
   end
