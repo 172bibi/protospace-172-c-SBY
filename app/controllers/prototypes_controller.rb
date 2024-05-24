@@ -1,4 +1,7 @@
 class PrototypesController < ApplicationController
+  before_action :correct_user, only: [:edit, :update]
+  before_action :logged_in_user, only: [:edit, :update]
+
   def index
     @prototypes = Prototype.includes(:user)
   end
@@ -36,5 +39,18 @@ class PrototypesController < ApplicationController
   private
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
+  end
+
+  def correct_user
+    @user = User.find(params[:id])
+    unless @user == current_user
+      redirect_to root_path
+    end
+  end
+
+  def logged_in_user
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
   end
 end
