@@ -5,47 +5,32 @@
         <%= @prototype.title%>
       </p>
       <%= link_to "by#{@prototype.user.name}", user_path(@prototype.user_id), class: :prototype__user %>
+      
       <% if user_signed_in? && current_user.id == @prototype.user_id%>
         <div class="prototype__manage">
-          <%= link_to "編集する", edit_prototype_path(@prototype), class: :prototype__btn %>
-          <%= link_to "削除する", root_path, class: :prototype__btn %>
-        </div>
-        <div class="prototype__image">
-           <%= image_tag(@prototype.image, class: :card__img ) %>
-        </div>
-        <div class="prototype__body">
-          <div class="prototype__detail">
-            <p class="detail__title">キャッチコピー</p>
-            <p class="detail__message">
-              <%= @prototype.catch_copy %>
-            </p>
-          </div>
-          <div class="prototype__detail">
-            <p class="detail__title">コンセプト</p>
-            <p class="detail__message">
-              <%= @prototype.concept %>
-            </p>
-          </div>
-        </div>
-      <% else %>
-        <div class="prototype__image">
-           <%= image_tag(@prototype.image, class: :card__img ) %>
-        </div>
-        <div class="prototype__body">
-          <div class="prototype__detail">
-            <p class="detail__title">キャッチコピー</p>
-            <p class="detail__message">
-              <%= @prototype.catch_copy %>
-            </p>
-          </div>
-          <div class="prototype__detail">
-            <p class="detail__title">コンセプト</p>
-            <p class="detail__message">
-              <%= @prototype.concept %>
-            </p>
-          </div>
+          <%= link_to "編集する", root_path, class: :prototype__btn %>
+          <%= link_to "削除する", "/prototypes/#{@prototype.id}", class: :prototype__btn , data: { turbo_method: :delete } %>
         </div>
       <% end %>
+
+        <div class="prototype__image">
+           <%= image_tag(@prototype.image, class: :card__img ) %>
+        </div>
+        <div class="prototype__body">
+          <div class="prototype__detail">
+            <p class="detail__title">キャッチコピー</p>
+            <p class="detail__message">
+              <%= @prototype.catch_copy %>
+            </p>
+          </div>
+          <div class="prototype__detail">
+            <p class="detail__title">コンセプト</p>
+            <p class="detail__message">
+              <%= @prototype.concept %>
+            </p>
+          </div>
+        </div>
+
       <div class="prototype__comments">
         <% if user_signed_in? %>
           <%= form_with model: [@prototype, @comment],local: true do |f|%>

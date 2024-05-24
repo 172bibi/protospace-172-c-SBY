@@ -35,6 +35,21 @@ class PrototypesController < ApplicationController
     end
   end
 
+  def destroy
+    prototype = Prototype.find(params[:id])
+    unless user_signed_in?
+      redirect_to new_user_session_path
+    end
+
+    if current_user.id == prototype.user_id
+      prototype.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
+    
+  end
+
   private
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
